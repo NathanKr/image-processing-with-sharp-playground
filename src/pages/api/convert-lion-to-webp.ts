@@ -23,5 +23,5 @@ export default async function handler(
   );
   await sharp(sourceImageFilePath).webp().toFile(outputImagePath);
 
-  res.status(200).json({ outputImagePath });
+  res.send({ outputImagePath });
 }

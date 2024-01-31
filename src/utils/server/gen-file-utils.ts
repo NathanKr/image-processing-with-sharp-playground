@@ -40,3 +40,8 @@ export function ensureDirectoryExists(directoryPath: string) {
     mkdirSync(directoryPath, { recursive: true });
   }
 }
+
+export function getFileSizeKb(filePath: string): number {
+  const stats = statSync(filePath);
+  return stats.size / 1024;
+}
