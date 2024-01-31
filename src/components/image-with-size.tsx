@@ -33,7 +33,10 @@ const ImageWithSize: FC<IProps> = ({ filePathRelative }) => {
       <p>
         {filePathRelative} [{fileSizeKb} kb]
       </p>
-      <img src={`${IMAGES_DIR}/${filePathRelative}`} />
+      <img
+        src={`${IMAGES_DIR}/${filePathRelative}`}
+        alt={`${filePathRelative} is missing`}
+      />
     </div>
   );
 };

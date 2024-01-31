@@ -10,7 +10,7 @@ export default async function handler(
   const sourceRootDirectory = getImagesDirInPublic();
   const targetRootDirectory = getImagesDirInPublic();
 
-  convertRecursivelyToWebP(sourceRootDirectory, targetRootDirectory);
+  await convertRecursivelyToWebP(sourceRootDirectory, targetRootDirectory);
 
   res.send({ targetRootDirectory, sourceRootDirectory });
 }
