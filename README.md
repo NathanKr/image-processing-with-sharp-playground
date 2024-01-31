@@ -1,0 +1,1 @@
+# image-processing-with-sharp-playground
