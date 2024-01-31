@@ -2,7 +2,6 @@
 
 # my stuff
 /output/*
-!/output/
 /public/images/kites/*.webp
 /public/images/lions/*.webp
 

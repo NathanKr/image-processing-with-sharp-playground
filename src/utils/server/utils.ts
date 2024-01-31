@@ -1,9 +1,6 @@
 import path from "path";
 import { IMAGES_DIR, LIONS_DIR, OUTPUT_DIR } from "../constants";
-
-// export function getImagePathInPublicDir(imageFileNmae: string): string {
-//   return path.join(process.cwd(), "public", IMAGES_DIR, imageFileNmae);
-// }
+import { existsSync, mkdirSync } from "fs";
 
 export function getImagesDirInPublic(): string {
   return path.join(process.cwd(), "public", IMAGES_DIR);
@@ -19,6 +16,17 @@ export function getImagePathInLionsDir(imageFileNmae: string): string {
   );
 }
 
+export function getExistingOutputDir(): string {
+  const dir = path.join(process.cwd(), OUTPUT_DIR);
+
+  // Create the directory if it doesn't exist
+  if (!existsSync(dir)) {
+    mkdirSync(dir);
+  }
+
+  return dir;
+}
+
 export function getImagePathInOutputDir(imageFileNmae: string): string {
-  return path.join(process.cwd(), OUTPUT_DIR, imageFileNmae);
+  return path.join(getExistingOutputDir(), imageFileNmae);
 }
