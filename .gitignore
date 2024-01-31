@@ -2,7 +2,7 @@
 
 # my stuff
 /output/*
-!/output/.gitkeep
+!/output/
 /public/images/kites/*.webp
 /public/images/lions/*.webp
 
