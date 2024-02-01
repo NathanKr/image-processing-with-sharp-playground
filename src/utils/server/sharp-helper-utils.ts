@@ -7,7 +7,7 @@ import {
 import { dirname, join, relative } from "path";
 
 /**
- * Go recuresively 
+ * Go recuresively but skip all ready existing webp files
  * Create directory on target if needed
  * @param sourceRootDirectory 
  * @param targetRootDirectory 
