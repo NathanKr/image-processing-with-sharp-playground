@@ -1,5 +1,6 @@
 import { existsSync, mkdirSync, readdirSync, statSync } from "fs";
-import { basename, extname, join } from "path";
+import { basename, dirname, extname, join } from "path";
+import { WEBP_EXTENSION } from "../constants";
 
 export function getAllFilesRecursively(
   directoryPath: string,
@@ -29,6 +30,23 @@ export function getAllFilesRecursively(
   traverseDirectory(directoryPath);
 
   return files;
+}
+
+export function replaceFileExtension(
+  filePath: string,
+  newExtension : string
+): string {
+  // Use path module to manipulate file paths
+  const directory = dirname(filePath);
+  const fileName = basename(filePath, extname(filePath));
+
+  // Combine the new file name with the new extension
+  const newFileName = `${fileName}.${newExtension}`;
+
+  // Create the new file path by combining the directory and the new file name
+  const newFilePath = join(directory, newFileName);
+
+  return newFilePath;
 }
 
 export function removeFileExtension(filePath: string): string {

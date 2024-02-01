@@ -4,14 +4,13 @@ import {
   KITES_DIR,
   KITE_1002W,
   LIONS_DIR,
-  LION_1024W_WEBP,
   LION_1280W,
   WEBP_EXTENSION,
 } from "@/utils/constants";
+import { Alert, Button } from "@mui/material";
 import axios from "axios";
 
 export default function ConvertAllToWebp() {
-
   async function convertAllToWebp(): Promise<void> {
     const url = InternalApi.ConvertAllToWebp;
     await axios.get(url);
@@ -20,6 +19,13 @@ export default function ConvertAllToWebp() {
 
   return (
     <div>
+      <Alert severity="success">
+        Notice the size of webp file below is much smaller than jpg above
+      </Alert>
+      <Alert severity="success">
+        Notice the quality of the jpg and webp which seems the same
+      </Alert>
+
       <h2>Original jpg files</h2>
       <div style={{ display: "flex" }}>
         <ImageWithSize filePathRelative={`${LIONS_DIR}/${LION_1280W}.jpg`} />
@@ -27,10 +33,10 @@ export default function ConvertAllToWebp() {
       </div>
 
       <h2>Converted jpg files to webp</h2>
-      <button onClick={convertAllToWebp}>Click to convert to webp if images are missing</button>
-      <p style={{color:'green'}}>Notice the size of webp file below is much smaller than jpg above</p>
-      <p style={{color:'green'}}>Notice the quality of the jpg and webp which seems the same</p>
-      <div style={{ display: "flex" }}>
+      <Button variant="contained" onClick={convertAllToWebp}>
+        Click to convert to webp if images are missing
+      </Button>
+      <div style={{ display: "flex", marginTop: "1rem" }}>
         <ImageWithSize
           filePathRelative={`${LIONS_DIR}/${LION_1280W}.${WEBP_EXTENSION}`}
         />

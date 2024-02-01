@@ -1,3 +1,3 @@
-export interface IReqFileSize {
+export interface IReqFile {
   filePathRelative: string; // under /public/images
 }

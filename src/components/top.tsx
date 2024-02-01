@@ -13,7 +13,7 @@ const tabs: IItem[] = [
 ];
 
 const top: FC = () => {
-  const elems = tabs.map((it) => <Link href={it.url}>{it.display}</Link>);
+  const elems = tabs.map((it,i) => <Link key={i} href={it.url}>{it.display}</Link>);
   return <div className={styles.container}>{elems}</div>;
 };
 
