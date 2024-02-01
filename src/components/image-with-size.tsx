@@ -3,6 +3,7 @@ import { IMAGES_DIR } from "@/utils/constants";
 import { FC, useEffect, useState } from "react";
 import { IReqFileSize } from "@/types/i-req-file-size";
 import { IResFileSize } from "@/types/i-res-file-size";
+import InternalApi from "@/types/e-internal-api";
 
 interface IProps {
   filePathRelative: string; // under public/images
@@ -13,7 +14,7 @@ const ImageWithSize: FC<IProps> = ({ filePathRelative }) => {
   useEffect(getFileSizeKb, []);
 
   function getFileSizeKb() {
-    const url = "/api/file-size";
+    const url = InternalApi.FileSize;
     const params: IReqFileSize = {
       filePathRelative,
     };
