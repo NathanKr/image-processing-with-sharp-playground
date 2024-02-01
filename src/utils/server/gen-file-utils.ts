@@ -1,6 +1,5 @@
 import { existsSync, mkdirSync, readdirSync, statSync } from "fs";
 import { basename, dirname, extname, join } from "path";
-import { WEBP_EXTENSION } from "../constants";
 
 export function getAllFilesRecursively(
   directoryPath: string,
@@ -32,9 +31,35 @@ export function getAllFilesRecursively(
   return files;
 }
 
+export function appendScaleFactorToFileName(
+  filePath: string,
+  scaleFactor: number
+): string {
+  // Split the file path into directory, name, and extension
+  const directory = filePath.substring(0, filePath.lastIndexOf("/") + 1);
+  const fileNameWithExtension = filePath.substring(
+    filePath.lastIndexOf("/") + 1
+  );
+  const fileName = fileNameWithExtension.substring(
+    0,
+    fileNameWithExtension.lastIndexOf(".")
+  );
+  const fileExtension = fileNameWithExtension.substring(
+    fileNameWithExtension.lastIndexOf(".")
+  );
+
+  // Append the scale factor to the file name
+  const scaledFileName = `${fileName}-${scaleFactor}x`;
+
+  // Combine the parts back into the modified file path
+  const modifiedFilePath = `${directory}${scaledFileName}${fileExtension}`;
+
+  return modifiedFilePath;
+}
+
 export function replaceFileExtension(
   filePath: string,
-  newExtension : string
+  newExtension: string
 ): string {
   // Use path module to manipulate file paths
   const directory = dirname(filePath);

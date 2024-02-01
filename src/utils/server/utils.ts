@@ -1,10 +1,9 @@
 import path from "path";
 import { IMAGES_DIR, LIONS_DIR, OUTPUT_DIR } from "../constants";
 import { existsSync, mkdirSync } from "fs";
-import { IReqFile } from "@/types/i-req-file";
 
-export function getImageFullPathInImagesDir(info : IReqFile) : string{
-  return path.join(getImagesDirInPublic(),info.filePathRelative);
+export function getImageFullPathInImagesDir(filePathRelative: string): string {
+  return path.join(getImagesDirInPublic(), filePathRelative);
 }
 
 export function getImagesDirInPublic(): string {

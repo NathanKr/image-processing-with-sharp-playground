@@ -23,7 +23,7 @@ export default function ConvertAllToWebp() {
         Notice the size of webp file below is much smaller than jpg above
       </Alert>
       <Alert severity="success">
-        Notice the quality of the jpg and webp which seems the same
+        Notice the quality of the jpg and webp files which seems the same
       </Alert>
 
       <h2>Original jpg files</h2>

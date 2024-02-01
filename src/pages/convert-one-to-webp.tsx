@@ -1,19 +1,19 @@
 import InternalApi from "@/types/e-internal-api";
-import { IReqFile } from "@/types/i-req-file";
-import IResConvert from "@/types/i-res-convert";
+import { IImageFile } from "@/types/i-image-file";
+import IMageFileOperationResult from "@/types/i-image-file-operation-result";
 import { KITES_DIR, KITE_1002W } from "@/utils/constants";
 import axios from "axios";
 import { FC, useRef, useState } from "react";
-import { Button, TextField } from "@mui/material";
+import { Button } from "@mui/material";
 
-const ConvertToWebp: FC = () => {
-  const [data, setData] = useState<IResConvert>();
+const ConvertOneToWebp: FC = () => {
+  const [data, setData] = useState<IMageFileOperationResult>();
   const inputElement = useRef<HTMLInputElement>(null);
   async function clickHandler() {
-    const url = InternalApi.ConvertToWebp;
+    const url = InternalApi.ConvertOneToWebp;
     setData({ sourceImageFullPath: "", targetImageFullPath: "" });
 
-    const body: IReqFile = {
+    const body: IImageFile = {
       filePathRelative: inputElement.current?.value ?? "",
     };
     try {
@@ -25,18 +25,22 @@ const ConvertToWebp: FC = () => {
 
   return (
     <>
-      <label>Image file under images directory</label>
+      <label>Insert relative image path under images directory</label>
+      <br />
       <input
         ref={inputElement}
         defaultValue={`${KITES_DIR}/${KITE_1002W}.jpg`}
       />
       <br />
-      <Button variant='contained' onClick={clickHandler}>
+      <br />
+      <Button variant="contained" onClick={clickHandler}>
         Convert to webp
       </Button>
+      <br />
+      <br />
       <p>source full path : {data?.sourceImageFullPath} </p>
       <p>target full path : {data?.targetImageFullPath} </p>
     </>
   );
 };
-export default ConvertToWebp;
+export default ConvertOneToWebp;

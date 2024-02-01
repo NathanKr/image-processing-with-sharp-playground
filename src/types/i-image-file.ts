@@ -1,3 +1,3 @@
-export interface IReqFile {
+export interface IImageFile {
   filePathRelative: string; // under /public/images
 }

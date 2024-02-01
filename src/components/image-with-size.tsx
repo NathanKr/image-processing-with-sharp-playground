@@ -1,7 +1,7 @@
 import axios from "axios";
 import { IMAGES_DIR } from "@/utils/constants";
 import { FC, useEffect, useState } from "react";
-import { IReqFile } from "@/types/i-req-file";
+import { IImageFile } from "@/types/i-image-file";
 import { IResFileSize } from "@/types/i-res-file-size";
 import InternalApi from "@/types/e-internal-api";
 
@@ -15,7 +15,7 @@ const ImageWithSize: FC<IProps> = ({ filePathRelative }) => {
 
   function getFileSizeKb() {
     const url = InternalApi.FileSize;
-    const params: IReqFile = {
+    const params: IImageFile = {
       filePathRelative,
     };
     axios

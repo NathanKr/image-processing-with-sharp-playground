@@ -1,30 +1,39 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 
-import { IImageFile } from "@/types/i-image-file";
 import { getImageFullPathInImagesDir } from "@/utils/server/utils";
 import { existsSync } from "fs";
 import type { NextApiRequest, NextApiResponse } from "next";
 import StatusCodes from "http-status-codes";
-import { replaceFileExtension } from "@/utils/server/gen-file-utils";
-import { WEBP_EXTENSION } from "@/utils/constants";
+import {
+  appendScaleFactorToFileName,
+} from "@/utils/server/gen-file-utils";
 import sharp from "sharp";
+import { IScaleImageFile } from "@/types/i-scale-image-file";
 import IMageFileOperationResult from "@/types/i-image-file-operation-result";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<IMageFileOperationResult>
 ) {
-  const { filePathRelative } = req.body as unknown as IImageFile;
+  const { scaleFactor, filePathRelative } =
+    req.body as unknown as IScaleImageFile;
+    
   const sourceImageFullPath = getImageFullPathInImagesDir(filePathRelative);
 
   if (!existsSync(sourceImageFullPath))
     return res.status(StatusCodes.NOT_FOUND).end();
 
-  const targetImageFullPath = replaceFileExtension(
+  const targetImageFullPath = appendScaleFactorToFileName(
     sourceImageFullPath,
-    WEBP_EXTENSION
+    scaleFactor
   );
-  await sharp(sourceImageFullPath).webp().toFile(targetImageFullPath);
+  // Get original image dimensions
+  const { width } = await sharp(sourceImageFullPath).metadata();
+
+  // Resize the image using sharp and await for the operation to finish
+  await sharp(sourceImageFullPath)
+    .resize({ width: Math.round(width! / scaleFactor) })
+    .toFile(targetImageFullPath);
 
   res
     .status(StatusCodes.CREATED)

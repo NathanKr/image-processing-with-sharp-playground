@@ -7,9 +7,9 @@ interface IItem {
   url: string;
 }
 const tabs: IItem[] = [
-  { url: "/", display: "ConvertAll" },
-  { url: "/convert-to-webp", display: "Convert" },
-  { url: "/scale", display: "Scale" },
+  { url: "/", display: "ConvertAllToWebP" },
+  { url: "/convert-to-webp", display: "ConvertOneToWebP" },
+  { url: "/scale-one", display: "ScaleOne" },
 ];
 
 const top: FC = () => {
