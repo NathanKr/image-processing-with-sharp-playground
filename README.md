@@ -6,6 +6,8 @@
 
 <h2>Implementation</h2>
 <ul>
-<li>/api/convert-lion-to-webp - convert a jpg file to webp file. The converted file is cretaed in /output directory</li>
-<li>/api/convert-all-to-webp - convert a all non webp files in /public/images to webp files. The converted files are created in public directory</li>
+<li>InternalApi.ConvertOneToWebp - convert an image file in /public/images to webp file in the same directory</li>
+<li>InternalApi.ConvertAllToWebp - convert all non webp files in /public/images to webp files in the same directory</li>
+<li>InternalApi.FileSize - compute the file size in kb</li>
+<li>InternalApi.ScaleOne - scale an image file by a factor and create a filein the same directory. The create file name include the scale factor</li>
 </ul>
