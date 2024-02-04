@@ -5,18 +5,24 @@ import {
   getAllFilesRecursively,
 } from "./gen-file-utils";
 import { dirname, join, relative } from "path";
+import IConvertAllResult from "./i-convert-all-result";
+import IErrorFile from "./i-error-file";
 
 /**
  * Go recuresively but skip all ready existing webp files
  * Create directory on target if needed
- * @param sourceRootDirectory 
- * @param targetRootDirectory 
+ * @param sourceRootDirectory
+ * @param targetRootDirectory
  */
 export async function convertRecursivelyToWebP(
   sourceRootDirectory: string,
   targetRootDirectory: string
-) {
+): Promise<IConvertAllResult> {
   const allFiles = getAllFilesRecursively(sourceRootDirectory, WEBP_EXTENSION);
+  const res: IConvertAllResult = {
+    numAllFile: allFiles.length,
+    errorFiles: [],
+  };
 
   for (const sourceFile of allFiles) {
     const relativePath = relative(sourceRootDirectory, sourceFile);
@@ -26,11 +32,19 @@ export async function convertRecursivelyToWebP(
     );
 
     ensureDirectoryExists(dirname(targetFile)); // Ensure the parent directory exists
-    console.log(sourceFile,targetFile);
-    
 
-    await convertToWebP(sourceFile, targetFile);
+    try {
+      await convertToWebP(sourceFile, targetFile);
+    } catch (err) {
+      const errorFile: IErrorFile = {
+        fileNameSource: sourceFile,
+        err,
+      };
+      res.errorFiles.push(errorFile);
+    }
   }
+
+  return res;
 }
 
 async function convertToWebP(

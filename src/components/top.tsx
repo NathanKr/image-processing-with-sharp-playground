@@ -8,7 +8,7 @@ interface IItem {
 }
 const tabs: IItem[] = [
   { url: "/", display: "ConvertAllToWebP" },
-  { url: "/convert-to-webp", display: "ConvertOneToWebP" },
+  { url: "/convert-one-to-webp", display: "ConvertOneToWebP" },
   { url: "/scale-one", display: "ScaleOne" },
 ];
 

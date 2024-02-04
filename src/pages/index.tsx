@@ -1,5 +1,6 @@
 import ImageWithSize from "@/components/image-with-size";
 import InternalApi from "@/types/e-internal-api";
+import IConvertAllApiResult from "@/types/i-convert-all-result";
 import {
   KITES_DIR,
   KITE_1002W,
@@ -9,12 +10,18 @@ import {
 } from "@/utils/constants";
 import { Alert, Button } from "@mui/material";
 import axios from "axios";
+import { useState } from "react";
 
 export default function ConvertAllToWebp() {
+  const [data, setData] = useState<IConvertAllApiResult>();
+  const [loading,setLoading] = useState(false)
+
   async function convertAllToWebp(): Promise<void> {
     const url = InternalApi.ConvertAllToWebp;
-    await axios.get(url);
-    window.location.reload();
+    setLoading(true);
+    const {data} = await axios.get(url);
+    setLoading(false);
+    setData(data)
   }
 
   return (
@@ -36,6 +43,12 @@ export default function ConvertAllToWebp() {
       <Button variant="contained" onClick={convertAllToWebp}>
         Click to convert to webp if images are missing
       </Button>
+      {loading && <p>loading ...</p>}
+      <div>
+        <p>sourceRootDirectory : {data?.sourceRootDirectory}</p>
+        <p>targetRootDirectory : {data?.targetRootDirectory}</p>
+        <p>errors : {data?.convertRecursivelyToWebPResult.errorFiles.length}</p>
+      </div>
       <div style={{ display: "flex", marginTop: "1rem" }}>
         <ImageWithSize
           filePathRelative={`${LIONS_DIR}/${LION_1280W}.${WEBP_EXTENSION}`}

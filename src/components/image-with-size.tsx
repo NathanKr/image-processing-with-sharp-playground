@@ -25,7 +25,7 @@ const ImageWithSize: FC<IProps> = ({ filePathRelative }) => {
         setFileSizeKb(parseInt(`${data.fileSizeKb}`));
       })
       .catch(function (error) {
-        console.log(error);
+        console.error(error);
       });
   }
 
