@@ -1,20 +1,27 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+
+import type { NextApiRequest, NextApiResponse } from "next";
+import StatusCodes from "http-status-codes";
+import IScaleFactor from "@/types/i-scale-factor";
 import IConvertAllApiResult from "@/types/i-convert-all-result";
-import { convertImagesFilesRecursivelyToWebP } from "@/utils/server/sharp-helper-utils";
+import { sacleWebPImagesFilesRecursively } from "@/utils/server/sharp-helper-utils";
 import { getImagesDirInPublic } from "@/utils/server/utils";
-import { StatusCodes } from "http-status-codes";
-import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<IConvertAllApiResult>
 ) {
-  const sourceRootDirectory = getImagesDirInPublic();
-  const targetRootDirectory = getImagesDirInPublic();
+  const { scaleFactor } = req.body as IScaleFactor;
 
-  const convertResult = await convertImagesFilesRecursivelyToWebP(
+  const targetRootDirectory = getImagesDirInPublic();
+  const sourceRootDirectory = getImagesDirInPublic();
+
+  console.log(targetRootDirectory,sourceRootDirectory,scaleFactor);
+  
+
+  const convertResult = await sacleWebPImagesFilesRecursively(
     sourceRootDirectory,
-    targetRootDirectory
+    scaleFactor
   );
 
   res.status(StatusCodes.CREATED).send({

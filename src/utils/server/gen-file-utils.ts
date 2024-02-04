@@ -1,9 +1,10 @@
+import IFileOptions from "@/types/i-file-options";
 import { existsSync, mkdirSync, readdirSync, statSync } from "fs";
 import { basename, dirname, extname, join } from "path";
 
 export function getAllFilesRecursively(
   directoryPath: string,
-  ignoredExtension: string
+  options: IFileOptions
 ): string[] {
   const files: string[] = [];
 
@@ -17,8 +18,21 @@ export function getAllFilesRecursively(
       if (stats.isFile()) {
         // Check if the file has the ignored extension. fileExtension include .
         const fileExtension = extname(fullPath).toLowerCase();
-        if (fileExtension !== `.${ignoredExtension}`) {
-          files.push(fullPath);
+        switch (options.type) {
+          case "ignored":
+            if (fileExtension !== `.${options.extension}`) {
+              files.push(fullPath);
+            }
+            break;
+
+          case "include":
+            if (fileExtension == `.${options.extension}`) {
+              files.push(fullPath);
+            }
+            break;
+
+          default:
+            throw new Error(`unexpected option : ${options.type}`);
         }
       } else if (stats.isDirectory()) {
         traverseDirectory(fullPath);
@@ -31,6 +45,12 @@ export function getAllFilesRecursively(
   return files;
 }
 
+/**
+ * for a file a.webp and scale factor 2 the target is a a-2x.webp
+ * @param filePath
+ * @param scaleFactor
+ * @returns
+ */
 export function appendScaleFactorToFileName(
   filePath: string,
   scaleFactor: number
@@ -87,4 +107,16 @@ export function ensureDirectoryExists(directoryPath: string) {
 export function getFileSizeKb(filePath: string): number {
   const stats = statSync(filePath);
   return stats.size / 1024;
+}
+
+export function ReplaceFileExtension(
+  file: string,
+  fileExtension: string
+): string {
+  return file.replace(/\.[^/.]+$/, `.${fileExtension}`);
+}
+
+export function getFileExtension(filename: string): string | undefined {
+  const parts: string[] = filename.split(".");
+  return parts.length > 1 ? parts.pop() : undefined;
 }
