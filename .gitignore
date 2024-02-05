@@ -4,6 +4,7 @@
 /output/*
 /public/images/kites/*.webp
 /public/images/lions/*.webp
+/public/images/scaled/*
 
 # dependencies
 /node_modules

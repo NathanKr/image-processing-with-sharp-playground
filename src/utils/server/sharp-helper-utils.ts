@@ -9,8 +9,8 @@ import {
 import { dirname, join, relative } from "path";
 import IConvertAllResult from "./i-convert-all-result";
 import IErrorFile from "./i-error-file";
-import { getImageFullPathInImagesDir } from "./utils";
 import IFileOptions from "@/types/i-file-options";
+import { existsSync, mkdirSync } from "fs";
 
 /**
  * Go recuresively but skip existing webp files
@@ -30,24 +30,28 @@ export async function convertImagesFilesRecursivelyToWebP(
   const res: IConvertAllResult = {
     numAllFile: allFiles.length,
     errorFiles: [],
-    numFileConvertions:0
+    numFileConvertions: 0,
+    sourceFilesFullPath: [],
+    targetFilesFullPath: [],
   };
 
-  for (const sourceFile of allFiles) {
-    const relativePath = relative(sourceRootDirectory, sourceFile);
-    const targetFile = join(
+  for (const sourceFileFullPath of allFiles) {
+    const relativePath = relative(sourceRootDirectory, sourceFileFullPath);
+    const targetFileFullPath = join(
       targetRootDirectory,
       replaceFileExtension(relativePath, WEBP_EXTENSION)
     );
 
-    ensureDirectoryExists(dirname(targetFile)); // Ensure the parent directory exists
+    ensureDirectoryExists(dirname(targetFileFullPath)); // Ensure the parent directory exists
 
     try {
-      await convertToWebP(sourceFile, targetFile);
+      await convertToWebP(sourceFileFullPath, targetFileFullPath);
+      res.sourceFilesFullPath.push(sourceFileFullPath);
+      res.targetFilesFullPath.push(targetFileFullPath);
       res.numFileConvertions++;
     } catch (err) {
       const errorFile: IErrorFile = {
-        fileNameSource: sourceFile,
+        fileNameSource: sourceFileFullPath,
         err,
       };
       res.errorFiles.push(errorFile);
@@ -59,13 +63,15 @@ export async function convertImagesFilesRecursivelyToWebP(
 
 /**
  * scale all webp files in sourceRootDirectory recuresively
- * put each target file in the same directory as the source file
+ * keep the directory tree
  * @param sourceRootDirectory
+ * @param targetRootDirectory
  * @param scaleFactor
  * @returns
  */
-export async function sacleWebPImagesFilesRecursively(
+export async function scaleWebPImagesFilesRecursively(
   sourceRootDirectory: string,
+  targetRootDirectory: string,
   scaleFactor: number
 ): Promise<IConvertAllResult> {
   const options: IFileOptions = {
@@ -76,16 +82,34 @@ export async function sacleWebPImagesFilesRecursively(
   const res: IConvertAllResult = {
     numAllFile: allFiles.length,
     errorFiles: [],
-    numFileConvertions: 0
+    numFileConvertions: 0,
+    sourceFilesFullPath: [],
+    targetFilesFullPath: [],
   };
 
-  for (const sourceFile of allFiles) {
+  for (const sourceFileFullPath of allFiles) {
     try {
-      await scaleOneWithTargetName(sourceFile, scaleFactor);
+      const relativePath = relative(sourceRootDirectory, sourceFileFullPath);
+      const targetFileFullPath = join(targetRootDirectory, relativePath);
+      const targetDir = dirname(targetFileFullPath);
+
+      if (!existsSync(targetDir)) {
+        mkdirSync(targetDir, { recursive: true });
+      }
+
+      const targetImageFullPath = appendScaleFactorToFileName(
+        targetFileFullPath,
+        scaleFactor
+      );
+
+      await scaleOne(sourceFileFullPath, scaleFactor, targetImageFullPath);
+      res.sourceFilesFullPath.push(sourceFileFullPath);
+      res.targetFilesFullPath.push(targetImageFullPath)
+
       res.numFileConvertions++;
     } catch (err) {
       const errorFile: IErrorFile = {
-        fileNameSource: sourceFile,
+        fileNameSource: sourceFileFullPath,
         err,
       };
       res.errorFiles.push(errorFile);

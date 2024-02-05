@@ -1,5 +1,5 @@
 import path from "path";
-import { IMAGES_DIR, LIONS_DIR, OUTPUT_DIR } from "../constants";
+import { IMAGES_DIR, LIONS_DIR, OUTPUT_DIR, SCALED_DIR } from "../constants";
 import { existsSync, mkdirSync } from "fs";
 
 export function getImageFullPathInImagesDir(filePathRelative: string): string {
@@ -8,6 +8,10 @@ export function getImageFullPathInImagesDir(filePathRelative: string): string {
 
 export function getImagesDirInPublic(): string {
   return path.join(process.cwd(), "public", IMAGES_DIR);
+}
+
+export function getScaledImagesDirInPublic(): string {
+  return path.join(process.cwd(), "public", IMAGES_DIR, SCALED_DIR);
 }
 
 export function getImagePathInLionsDir(imageFileNmae: string): string {

@@ -2,7 +2,7 @@ import ConvertAllResult from "@/components/convert-all-result";
 import InternalApi from "@/types/e-internal-api";
 import IConvertAllApiResult from "@/types/i-convert-all-result";
 import IScaleFactor from "@/types/i-scale-factor";
-import { Button } from "@mui/material";
+import { Alert, Button } from "@mui/material";
 import axios from "axios";
 import React, { useRef, useState } from "react";
 
@@ -10,6 +10,9 @@ const ScaleWebpAll = () => {
   const [result, setResult] = useState<IConvertAllApiResult>();
   const [loading, setLoading] = useState(false);
   const inputElemScaleFactor = useRef<HTMLInputElement>(null);
+
+  console.log(result?.convertResult.targetFilesFullPath);
+  
 
   async function scaleAllWebpFiles(): Promise<void> {
     const url = InternalApi.ScaleAllWebp;
@@ -29,6 +32,7 @@ const ScaleWebpAll = () => {
       <input ref={inputElemScaleFactor} type="number" defaultValue="2" />
       <br />
       <br />
+      <Alert severity="warning">Delete target directory if it is inside source</Alert>
       <Button variant="contained" onClick={scaleAllWebpFiles}>
         scale All Webp Files
       </Button>

@@ -40,7 +40,6 @@ export default function ConvertAllToWebp() {
         <ImageWithSize filePathRelative={`${KITES_DIR}/${KITE_1002W}.jpg`} />
       </div>
 
-      <h2>Converted jpg files to webp</h2>
       <Button variant="contained" onClick={convertAllToWebp}>
         Click to convert to webp if images are missing
       </Button>
@@ -52,6 +51,11 @@ export default function ConvertAllToWebp() {
           convertResult={result.convertResult}
         />
       )}
+      <h2>Converted jpg files to webp</h2>
+
+      <Alert severity="info">
+        reload page after convert to see new created images on the dom
+      </Alert>
       <div style={{ display: "flex", marginTop: "1rem" }}>
         <ImageWithSize
           filePathRelative={`${LIONS_DIR}/${LION_1280W}.${WEBP_EXTENSION}`}

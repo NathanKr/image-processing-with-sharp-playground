@@ -1,4 +1,5 @@
 export const IMAGES_DIR = 'images';
+export const SCALED_DIR = 'scaled';
 export const OUTPUT_DIR = 'output';
 export const LIONS_DIR = 'lions';
 export const KITES_DIR = 'kites';

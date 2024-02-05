@@ -4,8 +4,8 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import StatusCodes from "http-status-codes";
 import IScaleFactor from "@/types/i-scale-factor";
 import IConvertAllApiResult from "@/types/i-convert-all-result";
-import { sacleWebPImagesFilesRecursively } from "@/utils/server/sharp-helper-utils";
-import { getImagesDirInPublic } from "@/utils/server/utils";
+import { getImagesDirInPublic, getScaledImagesDirInPublic } from "@/utils/server/utils";
+import { scaleWebPImagesFilesRecursively } from "@/utils/server/sharp-helper-utils";
 
 export default async function handler(
   req: NextApiRequest,
@@ -13,14 +13,12 @@ export default async function handler(
 ) {
   const { scaleFactor } = req.body as IScaleFactor;
 
-  const targetRootDirectory = getImagesDirInPublic();
   const sourceRootDirectory = getImagesDirInPublic();
+  const targetRootDirectory = getScaledImagesDirInPublic();
 
-  console.log(targetRootDirectory,sourceRootDirectory,scaleFactor);
-  
-
-  const convertResult = await sacleWebPImagesFilesRecursively(
+  const convertResult = await scaleWebPImagesFilesRecursively(
     sourceRootDirectory,
+    targetRootDirectory,
     scaleFactor
   );
 
@@ -30,3 +28,5 @@ export default async function handler(
     convertResult,
   });
 }
+
+
