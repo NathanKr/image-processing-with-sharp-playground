@@ -51,9 +51,9 @@ export function getAllFilesRecursively(
  * @param scaleFactor
  * @returns
  */
-export function appendScaleFactorToFileName(
+export function appendWidthWToFileName(
   filePath: string,
-  scaleFactor: number
+  widthPx: number
 ): string {
   // Split the file path into directory, name, and extension
   const directory = filePath.substring(0, filePath.lastIndexOf("/") + 1);
@@ -69,7 +69,7 @@ export function appendScaleFactorToFileName(
   );
 
   // Append the scale factor to the file name
-  const scaledFileName = `${fileName}-${scaleFactor}x`;
+  const scaledFileName = `${fileName}-${widthPx}w`;
 
   // Combine the parts back into the modified file path
   const modifiedFilePath = `${directory}${scaledFileName}${fileExtension}`;

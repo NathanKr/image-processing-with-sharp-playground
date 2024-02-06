@@ -1,7 +1,7 @@
 import sharp, { OutputInfo } from "sharp";
 import { WEBP_EXTENSION } from "../constants";
 import {
-  appendScaleFactorToFileName,
+  appendWidthWToFileName,
   ensureDirectoryExists,
   getAllFilesRecursively,
   replaceFileExtension,
@@ -90,21 +90,24 @@ export async function scaleWebPImagesFilesRecursively(
   for (const sourceFileFullPath of allFiles) {
     try {
       const relativePath = relative(sourceRootDirectory, sourceFileFullPath);
-      const targetFileFullPath = join(targetRootDirectory, relativePath);
-      const targetDir = dirname(targetFileFullPath);
+      const targetFileFullPathBeforeFileChange = join(
+        targetRootDirectory,
+        relativePath
+      );
+      const targetDir = dirname(targetFileFullPathBeforeFileChange);
 
       if (!existsSync(targetDir)) {
         mkdirSync(targetDir, { recursive: true });
       }
 
-      const targetImageFullPath = appendScaleFactorToFileName(
-        targetFileFullPath,
-        scaleFactor
+      const { targetImageFullPath } = await scaleOneWithTargetName(
+        sourceFileFullPath,
+        scaleFactor,
+        targetFileFullPathBeforeFileChange
       );
 
-      await scaleOne(sourceFileFullPath, scaleFactor, targetImageFullPath);
       res.sourceFilesFullPath.push(sourceFileFullPath);
-      res.targetFilesFullPath.push(targetImageFullPath)
+      res.targetFilesFullPath.push(targetImageFullPath);
 
       res.numFileConvertions++;
     } catch (err) {
@@ -127,31 +130,33 @@ async function convertToWebP(
 }
 
 export async function scaleOneWithTargetName(
-  sourceImageFullPath: string,
-  scaleFactor: number
-): Promise<{ outputInfo: OutputInfo; targetImageFullPath: string }> {
-  const targetImageFullPath = appendScaleFactorToFileName(
-    sourceImageFullPath,
-    scaleFactor
+  sourceFileFullPath: string,
+  scaleFactor: number,
+  targetFileFullPathBeforeNameChange: string
+) {
+  const { width } = await sharp(sourceFileFullPath).metadata();
+  const newWidthPx = Math.round(width! * scaleFactor);
+  const targetImageFullPath = appendWidthWToFileName(
+    targetFileFullPathBeforeNameChange,
+    newWidthPx
   );
-  // Get original image dimensions
   const outputInfo = await scaleOne(
-    sourceImageFullPath,
-    scaleFactor,
+    newWidthPx,
+    sourceFileFullPath,
     targetImageFullPath
   );
   return { outputInfo, targetImageFullPath };
 }
 
+
+
 export async function scaleOne(
+  newWidthPx: number,
   sourceImageFullPath: string,
-  scaleFactor: number,
   targetImageFullPath: string
 ): Promise<OutputInfo> {
-  const { width } = await sharp(sourceImageFullPath).metadata();
-
   // Resize the image using sharp and await for the operation to finish
   return sharp(sourceImageFullPath)
-    .resize({ width: Math.round(width! / scaleFactor) })
+    .resize({ width: Math.round(newWidthPx) })
     .toFile(targetImageFullPath);
 }

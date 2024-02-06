@@ -11,7 +11,6 @@ const ScaleWebpAll = () => {
   const [loading, setLoading] = useState(false);
   const inputElemScaleFactor = useRef<HTMLInputElement>(null);
 
-  console.log(result?.convertResult.targetFilesFullPath);
   
 
   async function scaleAllWebpFiles(): Promise<void> {
@@ -27,9 +26,9 @@ const ScaleWebpAll = () => {
 
   return (
     <div>
-      <label>Insert scale factor &gt; 1</label>
+      <label>Insert scale factor &lt; 1</label>
       <br />
-      <input ref={inputElemScaleFactor} type="number" defaultValue="2" />
+      <input ref={inputElemScaleFactor} type="number" defaultValue="0.5" />
       <br />
       <br />
       <Alert severity="warning">Delete target directory if it is inside source</Alert>

@@ -11,7 +11,7 @@ interface IProps {
 
 const ImageWithSize: FC<IProps> = ({ filePathRelative }) => {
   const [fileSizeKb, setFileSizeKb] = useState<number>();
-  useEffect(getFileSizeKb, []);
+  useEffect(getFileSizeKb, [filePathRelative]);
 
   function getFileSizeKb() {
     const url = InternalApi.FileSize;

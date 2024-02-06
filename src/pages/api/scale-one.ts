@@ -6,9 +6,8 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import StatusCodes from "http-status-codes";
 import { IScaleImageFile } from "@/types/i-scale-image-file";
 import IMageFileOperationResult from "@/types/i-image-file-operation-result";
-import {
-  scaleOneWithTargetName,
-} from "@/utils/server/sharp-helper-utils";
+import sharp from "sharp";
+import { scaleOneWithTargetName } from "@/utils/server/sharp-helper-utils";
 
 export default async function handler(
   req: NextApiRequest,
@@ -24,7 +23,8 @@ export default async function handler(
 
   const { targetImageFullPath } = await scaleOneWithTargetName(
     sourceImageFullPath,
-    scaleFactor
+    scaleFactor,
+    sourceImageFullPath
   );
 
   res
