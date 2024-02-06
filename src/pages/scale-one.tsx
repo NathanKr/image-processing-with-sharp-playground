@@ -47,8 +47,9 @@ const ScaleOneImageFile: FC = () => {
       <br />
       <p>source full path : {data?.sourceImageFullPath} </p>
       <p>target full path : {data?.targetImageFullPath} </p>
+      <h3>This image is using srcset</h3>
       <img style={{width:'100%'}}
-        src="/images/kites/kite-1002w1.jpg"
+        src="/images/kites/kite-1002w.jpg"
         srcSet="/images/kites/kite-1002w.jpg 1002w,
                 /images/kites/kite-1002w-752w 752w , 
                 /images/kites/kite-1002w-501w.jpg 501w ,
