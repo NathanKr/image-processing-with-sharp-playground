@@ -1,6 +1,7 @@
 import sharp, { OutputInfo } from "sharp";
 import { WEBP_EXTENSION } from "../constants";
 import {
+  appendWidthWHeightWToFileName,
   appendWidthWToFileName,
   ensureDirectoryExists,
   getAllFilesRecursively,
@@ -11,6 +12,7 @@ import IConvertAllResult from "./i-convert-all-result";
 import IErrorFile from "./i-error-file";
 import IFileOptions from "@/types/i-file-options";
 import { existsSync, mkdirSync } from "fs";
+import IExtendedOutputInfo from "@/types/i-extended-output-info";
 
 /**
  * Go recuresively but skip existing webp files
@@ -129,11 +131,47 @@ async function convertToWebP(
   return sharp(inputImagePath).webp().toFile(outputImagePath);
 }
 
+export async function cropOneWithTargetName(
+  sourceFileFullPath: string,
+  newWidthPx: number,
+  newHeightPx: number,
+  targetFileFullPathBeforeNameChange: string
+): Promise<IExtendedOutputInfo> {
+  const targetImageFullPath = appendWidthWHeightWToFileName(
+    targetFileFullPathBeforeNameChange,
+    newWidthPx,
+    newHeightPx
+  );
+  const outputInfo = await cropOne(
+    sourceFileFullPath,
+    newWidthPx,
+    newHeightPx,
+    targetImageFullPath
+  );
+
+  return { outputInfo, targetImageFullPath };
+}
+
+export async function cropOne(
+  sourceFileFullPath: string,
+  newWidthPx: number,
+  newHeightPx: number,
+  targetImageFullPath: string
+): Promise<OutputInfo> {
+  // Load the image, resize it, and save the cropped image
+  return sharp(sourceFileFullPath)
+    .resize(newWidthPx, newHeightPx, {
+      fit: sharp.fit.cover,
+      position: sharp.strategy.attention,
+    })
+    .toFile(targetImageFullPath);
+}
+
 export async function scaleOneWithTargetName(
   sourceFileFullPath: string,
   scaleFactor: number,
   targetFileFullPathBeforeNameChange: string
-) {
+): Promise<IExtendedOutputInfo> {
   const { width } = await sharp(sourceFileFullPath).metadata();
   const newWidthPx = Math.round(width! * scaleFactor);
   const targetImageFullPath = appendWidthWToFileName(
@@ -147,8 +185,6 @@ export async function scaleOneWithTargetName(
   );
   return { outputInfo, targetImageFullPath };
 }
-
-
 
 export async function scaleOne(
   newWidthPx: number,

@@ -12,6 +12,7 @@ const tabs: IItem[] = [
   { url: "/convert-one-to-webp", display: "ConvertOneToWebP" },
   { url: "/scale-one", display: "ScaleOne" },
   { url: "/scale-webp-all", display: "ScaleWebpAll" },
+  { url: "/crop-one", display: "CropOne" },
 ];
 
 const top: FC = () => {

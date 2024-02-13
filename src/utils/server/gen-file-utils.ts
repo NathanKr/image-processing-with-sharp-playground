@@ -56,6 +56,35 @@ export function appendWidthWToFileName(
   widthPx: number
 ): string {
   // Split the file path into directory, name, and extension
+  const { fileName, directory, fileExtension } = splitFilePath(filePath);
+
+  // Append the scale factor to the file name
+  const scaledFileName = `${fileName}-${widthPx}w`;
+
+  // Combine the parts back into the modified file path
+  const modifiedFilePath = `${directory}${scaledFileName}${fileExtension}`;
+
+  return modifiedFilePath;
+}
+
+export function appendWidthWHeightWToFileName(
+  filePath: string,
+  newWidthPx: number,
+  newHeightPx:number
+): string {
+  // Split the file path into directory, name, and extension
+  const { fileName, directory, fileExtension } = splitFilePath(filePath);
+
+  // Append the scale factor to the file name
+  const scaledFileName = `${fileName}-${newWidthPx}w-${newHeightPx}w`;
+
+  // Combine the parts back into the modified file path
+  const modifiedFilePath = `${directory}${scaledFileName}${fileExtension}`;
+
+  return modifiedFilePath;
+}
+
+function splitFilePath(filePath: string) {
   const directory = filePath.substring(0, filePath.lastIndexOf("/") + 1);
   const fileNameWithExtension = filePath.substring(
     filePath.lastIndexOf("/") + 1
@@ -67,14 +96,7 @@ export function appendWidthWToFileName(
   const fileExtension = fileNameWithExtension.substring(
     fileNameWithExtension.lastIndexOf(".")
   );
-
-  // Append the scale factor to the file name
-  const scaledFileName = `${fileName}-${widthPx}w`;
-
-  // Combine the parts back into the modified file path
-  const modifiedFilePath = `${directory}${scaledFileName}${fileExtension}`;
-
-  return modifiedFilePath;
+  return { fileName, directory, fileExtension };
 }
 
 export function replaceFileExtension(

@@ -4,25 +4,26 @@ import { getImageFullPathInImagesDir } from "@/utils/server/utils";
 import { existsSync } from "fs";
 import type { NextApiRequest, NextApiResponse } from "next";
 import StatusCodes from "http-status-codes";
-import { IScaleImageFile } from "@/types/i-scale-image-file";
 import IMageFileOperationResult from "@/types/i-image-file-operation-result";
-import { scaleOneWithTargetName } from "@/utils/server/sharp-helper-utils";
+import { ICropImageFile } from "@/types/i-crop-image-file";
+import { cropOneWithTargetName } from "@/utils/server/sharp-helper-utils";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<IMageFileOperationResult>
 ) {
-  const { scaleFactor, filePathRelative } =
-    req.body as unknown as IScaleImageFile;
+  const { newWidthPx, newHeightPx, filePathRelative } =
+    req.body as unknown as ICropImageFile;
 
   const sourceImageFullPath = getImageFullPathInImagesDir(filePathRelative);
 
   if (!existsSync(sourceImageFullPath))
     return res.status(StatusCodes.NOT_FOUND).end();
 
-  const { targetImageFullPath } = await scaleOneWithTargetName(
+  const { targetImageFullPath } = await cropOneWithTargetName(
     sourceImageFullPath,
-    scaleFactor,
+    newWidthPx,
+    newHeightPx,
     sourceImageFullPath
   );
 
