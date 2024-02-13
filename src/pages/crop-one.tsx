@@ -37,12 +37,12 @@ const CropOneImageFile: FC = () => {
         defaultValue={`${LIONS_DIR}/${LION_1280W}.jpg`}
       />
       <br /> <br />
-      <label>Insert new width [px] &lt; old width ???</label>
+      <label>Insert new width [px] &lt; old width</label>
       <br />
       <input ref={inputElemNewWidthPx} type="number" defaultValue="300" />
       <br />
       <br />
-      <label>Insert new height [px] &lt; old height ???</label>
+      <label>Insert new height [px] &lt; old height</label>
       <br />
       <input ref={inputElemNewHeightPx} type="number" defaultValue="400" />
       <br />
