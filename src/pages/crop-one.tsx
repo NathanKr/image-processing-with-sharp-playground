@@ -37,12 +37,15 @@ const CropOneImageFile: FC = () => {
         defaultValue={`${LIONS_DIR}/${LION_1280W}.jpg`}
       />
       <br /> <br />
-      <label>Insert new width [px] &lt; old width</label>
+      <label>
+        Insert new width [px]{" "}
+        <span style={{ color: "orange" }}>&lt; old width</span>
+      </label>
       <br />
       <input ref={inputElemNewWidthPx} type="number" defaultValue="300" />
       <br />
       <br />
-      <label>Insert new height [px] &lt; old height</label>
+      <label>Insert new height [px] <span style={{ color: "orange" }}>&lt; old height</span></label>
       <br />
       <input ref={inputElemNewHeightPx} type="number" defaultValue="400" />
       <br />
@@ -60,7 +63,6 @@ const CropOneImageFile: FC = () => {
       )}
       <p>source full path : {data?.sourceImageFullPath} </p>
       <p>target full path : {data?.targetImageFullPath} </p>
-      
     </>
   );
 };
