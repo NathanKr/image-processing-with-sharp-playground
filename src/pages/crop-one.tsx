@@ -52,8 +52,15 @@ const CropOneImageFile: FC = () => {
       </Button>
       <br />
       <br />
+      {data?.targetImageFullPath && (
+        <h3>
+          The created image keeps its aspect ratio, but is resized to fit within
+          the new dimension
+        </h3>
+      )}
       <p>source full path : {data?.sourceImageFullPath} </p>
       <p>target full path : {data?.targetImageFullPath} </p>
+      
     </>
   );
 };
