@@ -51,7 +51,7 @@ const CropOneImageFile: FC = () => {
       <br />
       <br />
       <Button variant="contained" onClick={clickHandler}>
-        Scale
+        Crop
       </Button>
       <br />
       <br />
