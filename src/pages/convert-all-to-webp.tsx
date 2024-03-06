@@ -41,7 +41,7 @@ export default function ConvertAllToWebp() {
       </div>
 
       <Button variant="contained" onClick={convertAllToWebp}>
-        Click to convert to webp if images are missing
+        Click to convert files in public directory and sub directories
       </Button>
       {loading && <p>loading ...</p>}
       {result && (
